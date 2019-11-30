@@ -1,0 +1,22 @@
+
+syntax = "proto3";
+
+package user;
+
+import "google/protobuf/empty.proto";
+
+
+message User {
+    uint32 id = 1;
+    string name = 2;
+    string address = 3;
+}
+
+message Users {
+    repeated User users = 1;
+}
+
+service UserService{
+  rpc GetUsers(google.protobuf.Empty) returns (Users);
+  rpc SaveUser(User) returns (google.protobuf.Empty);
+}
