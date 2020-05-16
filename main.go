@@ -6,7 +6,7 @@ import (
 	"net"
 
 	"github.com/golang/protobuf/ptypes/empty"
-	pb "github.com/kcwebapply/grpc-sample/protogen"
+	pbUser "github.com/kcwebapply/grpc-sample/protogen/proto/user"
 	"google.golang.org/grpc"
 )
 
@@ -15,17 +15,17 @@ const (
 )
 
 var (
-	users = []*pb.User{}
+	users = []*pbUser.User{}
 )
 
 type server struct{}
 
-func (this server) GetUsers(ctx context.Context, req *empty.Empty) (*pb.Users, error) {
+func (this server) GetUsers(ctx context.Context, req *empty.Empty) (*pbUser.Users, error) {
 	//return &pb.Users{Users: []pb.User{&pb.User{Name: "kc", Address: "埼玉県"}}}, nil
-	return &pb.Users{Users: users}, nil //&pb.Users{Users: []*pb.User{&pb.User{}}}, nil
+	return &pbUser.Users{Users: users}, nil //&pb.Users{Users: []*pb.User{&pb.User{}}}, nil
 }
 
-func (this server) SaveUser(ctx context.Context, user *pb.User) (*empty.Empty, error) {
+func (this server) SaveUser(ctx context.Context, user *pbUser.User) (*empty.Empty, error) {
 	users = append(users, user)
 	//return &pb.Users{Users: []pb.User{&pb.User{Name: "kc", Address: "埼玉県"}}}, nil
 	return new(empty.Empty), nil //&pb.Users{Users: []*pb.User{&pb.User{}}}, nil
@@ -39,7 +39,7 @@ func main() {
 		log.Fatalf("failed to listen: %v", err)
 	}
 	s := grpc.NewServer()
-	pb.RegisterUserServiceServer(s, server{})
+	pbUser.RegisterUserServiceServer(s, server{})
 	if err := s.Serve(listenPort); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}
